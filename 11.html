@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<title>AngularJs</title>
+	<script src="angular.min.js"></script>
+	<style>
+		div {
+			border-bottom: 1px solid red;
+			width: 900px;
+			margin: 0 auto;
+		}
+	</style>
+</head>
+
+<body ng-app="myApp">
+	<div ng-controller="person">
+		111:<input type="text" ng-model="a1"> 222:
+		<input type="text" ng-model="a2">
+		<!-- 控制过滤器  大写uppercase 小写lowercase
+                 数字转化为货币格式currency  数据项选择子集filter
+                 根据某个表达式排列orderBy
+             -->
+		<br>333: {{full()|uppercase}}
+	</div>
+	<div ng-controller="ppp">
+		<h3>一个页面只能有一个angular.module,一个模块可以有多个控制器controller</h3>
+		<h4>过滤输入,从指定字符选择子集</h4>
+
+		<p><input type="text" ng-model="test"></p>
+		<ul>
+			<li ng-repeat="x in place | filter:test | orderBy:'person'">
+				{{x.sf + ',' + x.cs}}
+			</li>
+		</ul>
+	</div>
+	<div ng-controller="costCtrl">
+		<h3>currency控制器</h3>
+		<input type="number" ng-model="quantity">
+		<input type="number" ng-model="price">
+		<p>总价 = {{ cal() | currency }}</p>
+	</div>
+	<div ng-controller="timeout">
+		<h3>timeout</h3>
+		<p>3秒后显示信息</p>
+		<h4>{{myTimeout}}</h4>
+		<p>现在时间 : </p>
+		<h4 ng-controller="time">{{theTime}}</h4>
+	</div>
+	<div ng-controller="select">
+		<!-- ng-model为selecName自定义模型 ng-options 语句x for x in ARRAY -->
+		<h3>选择框</h3>
+		<select>
+            <option ng-repeat="x in names">{{x}}</option>
+        </select>
+		<p>选择一项</p>
+        <h4>与repeat类似的options选择的是一个对象,而repeat选择的是字符串</h4>
+        <select ng-model="selectSites" ng-options="x.site for x in sites"></select>
+        <p>你选择的是: {{selectSites.site}}</p>
+        <p>网址是:{{selectSites.url}}</p>
+	</div>
+
+	<script>
+            var app = angular.module('myApp',[]);
+
+            app.controller('person',function($scope) {
+                $scope.a1 = "Chation";
+                $scope.a2 = "Yec";
+                $scope.full = function() {
+                    return $scope.a1 + " " + $scope.a2;
+                }
+            });
+
+            app.controller('ppp',function($scope){
+                $scope.place = [
+                    {sf:'Hubei',cs:'Wuhan'},
+                    {sf:'Jiangsu',cs:'Hangzhou'},
+                    {sf:'Hainan',cs:'Haikou'}
+                ];
+            });
+
+            app.controller('costCtrl',function($scope) {
+                $scope.cal = function(){
+                    return $scope.quantity * $scope.price;
+                }
+            });
+
+            app.controller('timeout',function($scope, $timeout){
+                $scope.myTimeout = "loadding...";
+                $timeout(function(){
+                    $scope.myTimeout = "Hello,Chation~!";
+                },3000);
+            });
+
+            app.controller('time',function($scope, $interval){
+                $scope.theTime = new Date().toLocaleTimeString();
+                $interval(function(){
+                    $scope.theTime = new Date().toLocaleTimeString();
+                },1000)
+            });
+
+            app.controller('select',function($scope){
+                $scope.names = ["Apple","Banana","Orange"];
+                $scope.sites = [
+                    {site : "Google", url : "http://www.google.com"},
+                    {site : "W3CSchool", url : "http://www.w3cschool.cn"},
+                    {site : "Taobao", url : "http://www.taobao.com"}
+                ];
+            });
+        </script>
+</body>
+
+</html>
