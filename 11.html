@@ -60,6 +60,12 @@
         <p>你选择的是: {{selectSites.site}}</p>
         <p>网址是:{{selectSites.url}}</p>
 	</div>
+    <div>
+        <h3>disable</h3>
+        <button ng-disabled="myBtn">click !</button>
+        <input type="checkbox" ng-model="myBtn"/>可以点击?
+        <p></p>
+    </div>
 
 	<script>
             var app = angular.module('myApp',[]);
